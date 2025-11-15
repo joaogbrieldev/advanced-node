@@ -20,6 +20,7 @@ module.exports = {
     "@typescript-eslint/no-empty-function": "error",
     "@typescript-eslint/explicit-function-return-type": "error",
     "@typescript-eslint/semi": "error",
+    "@typescript-eslint/no-namespace": "off",
     "@typescript-eslint/no-explicit-any": "warn",
     "@typescript-eslint/naming-convention": [
       "error",
