@@ -8,5 +8,11 @@ export namespace LoadFacebookUserApi {
   export type Params = {
     token: string;
   };
-  export type Result = undefined;
+  export type Result =
+    | undefined
+    | {
+        facebookId: string;
+        email: string;
+        name: string;
+      };
 }
