@@ -29,7 +29,7 @@ export class FacebookAuthenticationService {
       if (accountData !== undefined) {
         await this.userAccountRepo.updateWithFacebook({
           id: accountData.id,
-          name: fbData.name,
+          name: accountData.name ?? fbData.name,
           facebookId: fbData.facebookId,
         });
       } else {

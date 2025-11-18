@@ -12,7 +12,7 @@ export namespace LoadUserAccountRepository {
     | undefined
     | {
         id: string;
-        name: string;
+        name?: string;
       };
 }
 
