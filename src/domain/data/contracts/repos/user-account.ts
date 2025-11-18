@@ -13,7 +13,6 @@ export namespace LoadUserAccountRepository {
     | {
         id: string;
         name: string;
-        email: string;
       };
 }
 
@@ -27,6 +26,20 @@ export namespace CreateFacebookAccountRepository {
   export type Params = {
     name: string;
     email: string;
+    facebookId: string;
+  };
+}
+
+export interface IUpdateUserAccountRepository {
+  updateWithFacebook: (
+    params: UpdateUserAccountRepository.Params
+  ) => Promise<void>;
+}
+
+export namespace UpdateUserAccountRepository {
+  export type Params = {
+    id: string;
+    name: string;
     facebookId: string;
   };
 }
