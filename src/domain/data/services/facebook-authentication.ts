@@ -8,6 +8,7 @@ import {
   ILoadUserAccountRepository,
   ISaveWithFacebookRepository,
 } from "@/domain/data/contracts/repos";
+import { FacebookAccount } from "@/domain/models";
 
 export class FacebookAuthenticationService {
   constructor(
@@ -24,12 +25,8 @@ export class FacebookAuthenticationService {
       const accountData = await this.userAccountRepo.load({
         email: fbData.email,
       });
-      await this.userAccountRepo.saveWithFacebook({
-        id: accountData?.id,
-        email: fbData.email,
-        name: accountData?.name ?? fbData.name,
-        facebookId: fbData.facebookId,
-      });
+      const facebookAccount = new FacebookAccount(fbData, accountData);
+      await this.userAccountRepo.saveWithFacebook(facebookAccount);
     }
     return new AuthenticationError();
   }
