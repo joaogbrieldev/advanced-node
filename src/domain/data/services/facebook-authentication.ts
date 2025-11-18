@@ -5,17 +5,15 @@ import {
   LoadFacebookUserApi,
 } from "@/domain/data/contracts/apis";
 import {
-  ICreateFacebookAccountRepository,
   ILoadUserAccountRepository,
-  IUpdateUserAccountRepository,
+  ISaveWithFacebookRepository,
 } from "@/domain/data/contracts/repos";
 
 export class FacebookAuthenticationService {
   constructor(
     private readonly facebookApi: ILoadFacebookUserApi,
     private readonly userAccountRepo: ILoadUserAccountRepository &
-      ICreateFacebookAccountRepository &
-      IUpdateUserAccountRepository
+      ISaveWithFacebookRepository
   ) {}
 
   async perform(
@@ -26,15 +24,12 @@ export class FacebookAuthenticationService {
       const accountData = await this.userAccountRepo.load({
         email: fbData.email,
       });
-      if (accountData !== undefined) {
-        await this.userAccountRepo.updateWithFacebook({
-          id: accountData.id,
-          name: accountData.name ?? fbData.name,
-          facebookId: fbData.facebookId,
-        });
-      } else {
-        await this.userAccountRepo.createFromFacebook(fbData);
-      }
+      await this.userAccountRepo.saveWithFacebook({
+        id: accountData?.id,
+        email: fbData.email,
+        name: accountData?.name ?? fbData.name,
+        facebookId: fbData.facebookId,
+      });
     }
     return new AuthenticationError();
   }
