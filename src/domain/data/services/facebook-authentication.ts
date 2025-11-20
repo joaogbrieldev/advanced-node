@@ -8,6 +8,7 @@ import {
   ILoadUserAccountRepository,
   ISaveWithFacebookRepository,
 } from "@/domain/data/contracts/repos";
+import { FacebookAuthentication } from "@/domain/features/facebook-authentication";
 import { AcessToken, FacebookAccount } from "@/domain/models";
 import { ITokenGenerator } from "../contracts/crypto";
 
@@ -21,7 +22,7 @@ export class FacebookAuthenticationService {
 
   async perform(
     params: LoadFacebookUserApi.Params
-  ): Promise<AuthenticationError> {
+  ): Promise<FacebookAuthentication.Result> {
     const fbData = await this.facebookApi.loadUser(params);
     if (fbData !== undefined) {
       const accountData = await this.userAccountRepo.load({
@@ -31,10 +32,11 @@ export class FacebookAuthenticationService {
       const { id } = await this.userAccountRepo.saveWithFacebook(
         facebookAccount
       );
-      await this.crypto.generateToken({
+      const token = await this.crypto.generateToken({
         key: id,
         expirationInMs: AcessToken.expirationInMs,
       });
+      return new AcessToken(token);
     }
     return new AuthenticationError();
   }
