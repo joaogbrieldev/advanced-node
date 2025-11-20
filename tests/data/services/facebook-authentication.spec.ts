@@ -6,7 +6,7 @@ import {
 } from "@/domain/data/contracts/repos";
 import { FacebookAuthenticationService } from "@/domain/data/services/facebook-authentication";
 import { AuthenticationError } from "@/domain/errors/authentication";
-import { FacebookAccount } from "@/domain/models";
+import { AcessToken, FacebookAccount } from "@/domain/models";
 import { mock, MockProxy } from "jest-mock-extended";
 import { mocked } from "ts-jest/utils";
 
@@ -76,6 +76,7 @@ describe("FacebookAuthentication", () => {
     await sut.perform({ token });
     expect(crypto.generateToken).toHaveBeenCalledWith({
       key: "any_id",
+      expirationInMs: AcessToken.expirationInMs,
     });
     expect(crypto.generateToken).toHaveBeenCalledTimes(1);
   });

@@ -4,5 +4,6 @@ export interface ITokenGenerator {
 export namespace ITokenGenerator {
   export type Params = {
     key: string;
+    expirationInMs: number;
   };
 }
