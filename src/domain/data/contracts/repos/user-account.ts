@@ -19,7 +19,7 @@ export namespace LoadUserAccountRepository {
 export interface ISaveWithFacebookRepository {
   saveWithFacebook: (
     params: SaveWithFacebookRepository.Params
-  ) => Promise<void>;
+  ) => Promise<SaveWithFacebookRepository.Result>;
 }
 
 export namespace SaveWithFacebookRepository {
@@ -28,5 +28,8 @@ export namespace SaveWithFacebookRepository {
     email: string;
     name: string;
     facebookId: string;
+  };
+  export type Result = {
+    id: string;
   };
 }

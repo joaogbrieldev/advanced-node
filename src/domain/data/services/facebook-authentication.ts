@@ -9,12 +9,14 @@ import {
   ISaveWithFacebookRepository,
 } from "@/domain/data/contracts/repos";
 import { FacebookAccount } from "@/domain/models";
+import { ITokenGenerator } from "../contracts/crypto";
 
 export class FacebookAuthenticationService {
   constructor(
     private readonly facebookApi: ILoadFacebookUserApi,
     private readonly userAccountRepo: ILoadUserAccountRepository &
-      ISaveWithFacebookRepository
+      ISaveWithFacebookRepository,
+    private readonly crypto: ITokenGenerator
   ) {}
 
   async perform(
@@ -26,7 +28,10 @@ export class FacebookAuthenticationService {
         email: fbData.email,
       });
       const facebookAccount = new FacebookAccount(fbData, accountData);
-      await this.userAccountRepo.saveWithFacebook(facebookAccount);
+      const { id } = await this.userAccountRepo.saveWithFacebook(
+        facebookAccount
+      );
+      await this.crypto.generateToken({ key: id });
     }
     return new AuthenticationError();
   }
