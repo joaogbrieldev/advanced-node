@@ -5,4 +5,7 @@ describe("AcessToken", () => {
     const sut = new AcessToken("any_token");
     expect(sut).toEqual({ value: "any_token" });
   });
+  it("should expire in 30 minutes", () => {
+    expect(AcessToken.expirationInMs).toBe(1800000);
+  });
 });

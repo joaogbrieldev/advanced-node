@@ -4,4 +4,8 @@ export class AcessToken {
   static create(value: string): AcessToken {
     return new AcessToken(value);
   }
+
+  static get expirationInMs(): number {
+    return 30 * 60 * 1000;
+  }
 }
