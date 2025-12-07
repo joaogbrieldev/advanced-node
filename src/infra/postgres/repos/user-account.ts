@@ -27,19 +27,23 @@ export class PgUserAccountRepository implements ILoadUserAccountRepository {
 
   async saveWithFacebook(
     params: SaveWithFacebookRepository.Params
-  ): Promise<void> {
+  ): Promise<SaveWithFacebookRepository.Result> {
+    let id: string;
     if (!params.id) {
-      await this.pgUserRepo.save({
+      const pgUser = await this.pgUserRepo.save({
         email: params.email,
         name: params.name,
         facebookId: params.facebookId,
       });
+      id = pgUser.id.toString();
     } else {
       await this.pgUserRepo.update(parseInt(params.id), {
         email: params.email,
         name: params.name,
         facebookId: params.facebookId,
       });
+      id = params.id;
     }
+    return { id };
   }
 }
