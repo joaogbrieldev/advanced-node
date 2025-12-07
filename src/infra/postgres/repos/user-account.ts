@@ -1,12 +1,15 @@
 import {
   ILoadUserAccountRepository,
+  ISaveWithFacebookRepository,
   LoadUserAccountRepository,
   SaveWithFacebookRepository,
 } from "@/domain/data/contracts/repos";
 import { PgUser } from "@/infra/postgres/entities/user";
 import { getRepository, Repository } from "typeorm";
 
-export class PgUserAccountRepository implements ILoadUserAccountRepository {
+export class PgUserAccountRepository
+  implements ILoadUserAccountRepository, ISaveWithFacebookRepository
+{
   private readonly pgUserRepo: Repository<PgUser>;
   constructor() {
     this.pgUserRepo = getRepository(PgUser);
