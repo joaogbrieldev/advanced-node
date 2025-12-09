@@ -1,5 +1,5 @@
 export class AcessToken {
-  constructor(private readonly value: string) {}
+  constructor(readonly value: string) {}
 
   static create(value: string): AcessToken {
     return new AcessToken(value);
