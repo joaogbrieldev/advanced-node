@@ -1,5 +1,6 @@
 import { FacebookLoginController } from "@/application/controlers/facebook-login";
-import { ServerError } from "@/application/errors";
+import { RequiredFieldError, ServerError } from "@/application/errors";
+import { badRequest } from "@/application/helpers";
 import { AuthenticationError } from "@/domain/errors";
 import { IFacebookAuthentication } from "@/domain/features/facebook-authentication";
 import { AcessToken } from "@/domain/models";
@@ -17,24 +18,15 @@ describe("FacebookLoginController", () => {
   });
   it("should return 400 if token is empty", async () => {
     const httpResponse = await sut.handle({ token: "" });
-    expect(httpResponse).toEqual({
-      statusCode: 400,
-      data: new Error("Token is required"),
-    });
+    expect(httpResponse).toEqual(badRequest(new RequiredFieldError("Token")));
   });
   it("should return 400 if token is null", async () => {
     const httpResponse = await sut.handle({ token: null });
-    expect(httpResponse).toEqual({
-      statusCode: 400,
-      data: new Error("Token is required"),
-    });
+    expect(httpResponse).toEqual(badRequest(new RequiredFieldError("Token")));
   });
   it("should return 400 if token is undefined", async () => {
     const httpResponse = await sut.handle({ token: undefined });
-    expect(httpResponse).toEqual({
-      statusCode: 400,
-      data: new Error("Token is required"),
-    });
+    expect(httpResponse).toEqual(badRequest(new RequiredFieldError("Token")));
   });
   it("should call FacebookAuthentication with correct values", async () => {
     await sut.handle({ token: "any_token" });
